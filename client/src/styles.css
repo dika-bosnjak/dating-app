@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+.btn, input {
+    height: fit-content;
+}
+
+input{
+    padding-bottom: 5px !important;
+}
+
+.bg-primary {
+    background-color: #d83664 !important;
+  }
+.text-primary {
+    color: #d83664 !important;
+}
+  .btn-primary {
+    color: #fff !important;
+    background-color: #d83664 !important;
+    border-color: #d83664 !important;
+  }
+
+  .btn-secondary {
+    color: #fff !important;
+    background-color: #d5a8b5 !important;
+    border-color: #d5a8b5 !important;
+  }
+
+  .btn-secondary:hover {
+    color: #fff !important;
+    background-color: #b07081 !important;
+    border-color: #b07081 !important;
+  }
+
+  .btn-primary:hover {
+    color: #fff !important;
+    background-color: #bf1041 !important;
+    border-color: #bf1041 !important;
+  }
