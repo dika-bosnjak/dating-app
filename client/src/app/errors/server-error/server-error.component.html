@@ -1,0 +1,10 @@
+<div class="container text-center" style="margin-top:300px;">
+    <h1>Ooops</h1>
+    <h4>Internal Server Error</h4>
+    <ng-container *ngIf="error">
+        <h5 class="text-danger">Error: {{error.message}}</h5>
+    </ng-container>
+    <code class="mt-5" style="background-color: whitesmoke;">
+     {{error.details}}
+    </code>
+</div>
