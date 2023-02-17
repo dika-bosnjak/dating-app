@@ -44,4 +44,12 @@ export class MembersService {
       })
     );
   }
+
+  uploadImage(imageUrl: string) {
+    console.log('slika' + imageUrl);
+    let formData: FormData = new FormData();
+    formData.append('imageUrl', imageUrl);
+    return this.http.get<Member>(this.baseUrl + 'users/dika');
+    //return this.http.post(this.baseUrl + 'users/user-photo', formData);
+  }
 }

@@ -1,0 +1,14 @@
+<div class="row" *ngIf="member">
+
+    <div class="col-4 text-center" *ngFor="let photo of member.photos">
+        <img src="{{photo.url}}" alt="photo of the user" class="img-thumbnail mb-1">
+        <div class="text-center">
+            <button class="btn btn-sm btn-primary">Set as main</button>
+            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+        </div>
+    </div>
+    <div *ngIf="apikey" class="mt-5 text-center">
+        <ng-picker-overlay [apikey]="apikey" (uploadSuccess)="onSuccess($event)"
+        (uploadError)="onError($event)"> <button class="btn btn-primary">Upload new image</button></ng-picker-overlay>
+    </div>
+</div>

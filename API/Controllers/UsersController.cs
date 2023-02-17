@@ -46,5 +46,28 @@ namespace API.Controllers
 
             return BadRequest("Failed to update the user");
         }
+
+        [HttpPost("user-photo")]
+        public async Task<ActionResult<PhotoDTO>> UploadImage(PhotoUploadDTO uploadedPhotoDTO)
+        {
+            Console.WriteLine("IMAGE UPLOAD PROCESS");
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null) return NotFound();
+
+            var photo = new Photo
+            {
+                Url = uploadedPhotoDTO.imageUrl
+            };
+
+            if (user.Photos.Count == 0) photo.IsMain = true;
+
+            user.Photos.Add(photo);
+
+            if (await _userRepository.SaveAllAsync()) return _mapper.Map<PhotoDTO>(photo);
+
+            return BadRequest("Photo could not be added");
+
+        }
     }
 }
