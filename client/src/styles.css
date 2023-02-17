@@ -1,4 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */ 
+
 .btn, input {
     height: fit-content;
 }
@@ -35,4 +36,77 @@ input{
     color: #fff !important;
     background-color: #bf1041 !important;
     border-color: #bf1041 !important;
+  }
+
+
+  .tab-panel {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .tab-content {
+    margin-top: 30px !important;
+    background-color: inherit !important;
+  }
+  
+  .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
+    border-bottom: 4px solid #d83664;
+  }
+
+  .member-tabset > .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus:hover {
+    color: #333333;
+    box-shadow: none !important;
+  }
+  
+  .member-tabset > .nav-tabs > li.open > a, .member-tabset > .nav-tabs > li:hover > a {
+    border: 0;
+    background: none !important;
+    color: #333333 !important;
+    box-shadow: none !important;
+  }
+  
+  .member-tabset > .nav-tabs > li.open > a > i, .member-tabset > .nav-tabs > li:hover > a > i {
+    color: #a6a6a6;
+  }
+  
+  .member-tabset > .nav-tabs > li.open .dropdown-menu, .member-tabset > .nav-tabs > li:hover .dropdown-menu {
+    margin-top: 0px;
+  }
+  
+  .member-tabset > .nav-tabs > li.active {
+    border-bottom: 4px solid #d83664;
+    position: relative;
+    color: #d83664;
+    font-weight: bolder;
+  }
+  
+  .member-tabset > .nav-tabs > li.active > a {
+    border: 0 !important;
+    color: #333333;
+    box-shadow: none !important;
+  }
+
+  .member-tabset >.nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus > a {
+    border: 0 !important;
+    color: #333333;
+    box-shadow: none !important;
+  }
+
+  .member-tabset > .nav-tabs .nav-link > a:hover {
+    border: 0 !important;
+    color: #333333;
+    box-shadow: none !important;
+  }
+  
+  .member-tabset > .nav-tabs > li.active > a > i {
+    color: #404040;
+  }
+  
+  .member-tabset > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 15px 0;
   }
