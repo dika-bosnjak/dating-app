@@ -38,6 +38,12 @@ input{
     border-color: #bf1041 !important;
   }
 
+  .alert-info{
+    background: #378a8a linear-gradient(180deg, #919999, #c3cccc) repeat-x;
+    padding-bottom: 2px !important;
+    color: #333333;
+  }
+
 
   .tab-panel {
     border: 1px solid #ddd;
