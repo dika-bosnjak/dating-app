@@ -1,10 +1,10 @@
 <div class="row" *ngIf="member">
 
     <div class="col-4 text-center" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="photo of the user" class="img-thumbnail mb-1">
+        <img src="{{photo.url}}" alt="photo of the user" class="img-thumbnail mb-1" width="400px" height="400px">
         <div class="text-center">
-            <button class="btn btn-sm btn-primary">Set as main</button>
-            <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-sm me-2" (click)="setMainPhoto(photo)" [disabled]="photo.isMain" [ngClass]="photo.isMain? 'btn-success active': 'btn-outline-success'">Set as main</button>
+            <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)"  [disabled]="photo.isMain"><i class="fa fa-trash"></i></button>
         </div>
     </div>
     <div *ngIf="apikey" class="mt-5 text-center">

@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.ObjectPool;
 
 namespace API.Controllers
 {
@@ -19,10 +14,13 @@ namespace API.Controllers
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public IUserRepository _userRepository { get; }
+
+        public AccountController(DataContext context, ITokenService tokenService, IUserRepository userRepository)
         {
             _tokenService = tokenService;
             _context = context;
+            _userRepository = userRepository;
         }
 
         [HttpPost("register")]
@@ -41,17 +39,20 @@ namespace API.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+
+
             return new UserDTO
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDTO.Username);
+            var user = await _userRepository.GetUserByUsernameAsync(loginDTO.Username);
             if (user == null) return Unauthorized("invalid username");
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -65,7 +66,8 @@ namespace API.Controllers
             return new UserDTO
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
             };
         }
 

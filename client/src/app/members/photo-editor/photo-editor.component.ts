@@ -1,8 +1,10 @@
+import { IMAGE_CONFIG } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { Member } from 'src/app/_models/member';
+import { Photo } from 'src/app/_models/photo';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { MembersService } from 'src/app/_services/members.service';
@@ -23,8 +25,7 @@ export class PhotoEditorComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private toastrService: ToastrService,
-    private memberService: MembersService,
-    private http: HttpClient
+    private memberService: MembersService
   ) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => {
@@ -37,15 +38,18 @@ export class PhotoEditorComponent implements OnInit {
     this.apikey = environment.filestackApiKey;
   }
 
-  async onSuccess(res: any) {
-    for (let uploadedImage of res.filesUploaded) {
-      if (this.user && uploadedImage) {
-        await this.http.post(this.baseUrl + 'users/user-photo', {
-          imageUrl: uploadedImage.url,
-        });
-        var response = this.memberService.uploadImage(uploadedImage.url);
-        console.log('###uploadSuccess', response);
-      }
+  onSuccess(res: any) {
+    if (this.user && res.filesUploaded[0].url) {
+      this.memberService.uploadImage(res.filesUploaded[0].url).subscribe({
+        next: (response: any) => {
+          this.toastrService.success('Image uploaded successfully.');
+          this.member?.photos.push({
+            id: response.id,
+            url: response.url,
+            isMain: response.isMain,
+          });
+        },
+      });
     }
   }
 
@@ -53,27 +57,34 @@ export class PhotoEditorComponent implements OnInit {
     console.log('###uploadError', err);
     this.toastrService.error('Image could not be uploaded.');
   }
-}
 
-/*
-{
-    "filesUploaded": [
-        {
-            "filename": "IMG_7861.jpg",
-            "handle": "pAIahoOiQVeccIP5fgwO",
-            "mimetype": "image/jpeg",
-            "originalPath": "IMG_7861.jpg",
-            "size": 180403,
-            "source": "local_file_system",
-            "url": "https://cdn.filestackcontent.com/pAIahoOiQVeccIP5fgwO",
-            "uploadId": "K2jFJ3R1pO4u99UO",
-            "originalFile": {
-                "name": "IMG_7861.jpg",
-                "type": "image/jpeg",
-                "size": 180403
-            },
-            "status": "Stored"
+  setMainPhoto(photo: Photo) {
+    this.memberService.setImageAsMain(photo.id).subscribe({
+      next: (_) => {
+        if (this.user && this.member) {
+          this.user.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+          this.member.photoUrl = photo.url;
+          this.member.photos.forEach((p) => {
+            if (p.isMain) p.isMain = false;
+            if (p.id == photo.id) p.isMain = true;
+          });
         }
-    ],
-    "filesFailed": []
-} */
+        this.toastrService.success('Image is set as main successfully.');
+      },
+    });
+  }
+
+  deletePhoto(photo: Photo) {
+    this.memberService.deletePhoto(photo.id).subscribe({
+      next: (_) => {
+        if (this.member) {
+          this.member.photos = this.member.photos.filter(
+            (image) => image.id !== photo.id
+          );
+          this.toastrService.success('Image is deleted successfully.');
+        }
+      },
+    });
+  }
+}

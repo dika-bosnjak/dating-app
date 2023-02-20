@@ -1,3 +1,11 @@
 .dropdown-toggle, .dropdown-item{
     cursor: pointer;
 }
+
+.img-rounded{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    object-fit: fill;
+    
+}

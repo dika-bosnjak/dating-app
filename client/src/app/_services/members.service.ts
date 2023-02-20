@@ -46,10 +46,16 @@ export class MembersService {
   }
 
   uploadImage(imageUrl: string) {
-    console.log('slika' + imageUrl);
-    let formData: FormData = new FormData();
-    formData.append('imageUrl', imageUrl);
-    return this.http.get<Member>(this.baseUrl + 'users/dika');
-    //return this.http.post(this.baseUrl + 'users/user-photo', formData);
+    return this.http.post(this.baseUrl + 'users/user-photo', {
+      imageUrl: imageUrl,
+    });
+  }
+
+  setImageAsMain(photoId: number) {
+    return this.http.put(this.baseUrl + `users/set-main-photo/${photoId}`, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + `users/delete-photo/${photoId}`);
   }
 }

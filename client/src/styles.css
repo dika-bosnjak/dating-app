@@ -14,10 +14,26 @@ input{
 .text-primary {
     color: #d83664 !important;
 }
+.text-blue {
+  color: #2575df !important;
+}
+
   .btn-primary {
     color: #fff !important;
     background-color: #d83664 !important;
     border-color: #d83664 !important;
+  }
+
+  .btn-blue {
+    color: #fff !important;
+    background-color: #2575df !important;
+    border-color: #2575df !important;
+  }
+
+  .btn-blue:hover {
+    color: #fff !important;
+    background-color: #1e60b6 !important;
+    border-color: #1e60b6 !important;
   }
 
   .btn-secondary {
@@ -116,3 +132,4 @@ input{
     border-top: 1px solid #eee;
     padding: 15px 0;
   }
+
