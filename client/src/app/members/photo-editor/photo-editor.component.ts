@@ -48,6 +48,11 @@ export class PhotoEditorComponent implements OnInit {
             url: response.url,
             isMain: response.isMain,
           });
+          if (response.isMain && this.user && this.member) {
+            this.user.photoUrl = response.url;
+            this.member.photoUrl = response.url;
+            this.accountService.setCurrentUser(this.user);
+          }
         },
       });
     }

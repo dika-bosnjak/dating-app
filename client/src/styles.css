@@ -1,135 +1,164 @@
-/* You can add global styles to this file, and also import other style files */ 
+/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary: #d83664;
+  --darkprimary: #bf1041;
+  --darkerprimary: #9b2345;
+  --lightprimary: #d5a8b5;
 
-.btn, input {
-    height: fit-content;
+  --blue: #2575df;
+  --darkblue: #1e60b6;
+
+  --white: #fff;
+  --black: #333333;
 }
 
-input{
-    padding-bottom: 5px !important;
+.btn,
+input {
+  height: fit-content;
 }
 
+input {
+  padding-bottom: 5px !important;
+}
+
+/*PRIMARY COLORS*/
 .bg-primary {
-    background-color: #d83664 !important;
-  }
+  background-color: var(--primary) !important;
+}
 .text-primary {
-    color: #d83664 !important;
+  color: var(--primary) !important;
 }
+.btn-primary {
+  color: var(--white) !important;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+  color: var(--white) !important;
+  background-color: var(--darkprimary) !important;
+  border-color: var(--darkprimary) !important;
+}
+
+/*SECONDARY COLORS */
+
+.btn-secondary {
+  color: var(--white) !important;
+  background-color: var(--lightprimary) !important;
+  border-color: var(--lightprimary) !important;
+}
+
+.btn-secondary:hover {
+  color: var(--white) !important;
+  background-color: var(--darkerprimary) !important;
+  border-color: var(--darkerprimary) !important;
+}
+
+/*BLUE COLORS */
 .text-blue {
-  color: #2575df !important;
+  color: var(--blue) !important;
 }
 
-  .btn-primary {
-    color: #fff !important;
-    background-color: #d83664 !important;
-    border-color: #d83664 !important;
-  }
+.btn-blue {
+  color: var(--white) !important;
+  background-color: var(--blue) !important;
+  border-color: var(--blue) !important;
+}
 
-  .btn-blue {
-    color: #fff !important;
-    background-color: #2575df !important;
-    border-color: #2575df !important;
-  }
+.btn-blue:hover {
+  color: var(--white) !important;
+  background-color: var(--dark-blue) !important;
+  border-color: var(--dark-blue) !important;
+}
 
-  .btn-blue:hover {
-    color: #fff !important;
-    background-color: #1e60b6 !important;
-    border-color: #1e60b6 !important;
-  }
+/*ALERT INFO*/
+.alert-info {
+  background: #378a8a linear-gradient(180deg, #919999, #c3cccc) repeat-x;
+  padding-bottom: 2px !important;
+  color: var(--black);
+}
 
-  .btn-secondary {
-    color: #fff !important;
-    background-color: #d5a8b5 !important;
-    border-color: #d5a8b5 !important;
-  }
+/*PANEL TABS*/
+.tab-panel {
+  border: 1px solid var(--white);
+  padding: 10px;
+  border-radius: 4px;
+}
 
-  .btn-secondary:hover {
-    color: #fff !important;
-    background-color: #b07081 !important;
-    border-color: #b07081 !important;
-  }
+.tab-content {
+  margin-top: 30px !important;
+  background-color: inherit !important;
+}
 
-  .btn-primary:hover {
-    color: #fff !important;
-    background-color: #bf1041 !important;
-    border-color: #bf1041 !important;
-  }
+.nav-tabs > li.open,
+.member-tabset > .nav-tabs > li:hover {
+  border-bottom: 4px solid var(--primary);
+}
 
-  .alert-info{
-    background: #378a8a linear-gradient(180deg, #919999, #c3cccc) repeat-x;
-    padding-bottom: 2px !important;
-    color: #333333;
-  }
+.member-tabset > .nav-tabs .nav-link.active:hover,
+.nav-tabs .nav-link.active:focus:hover {
+  color: var(--black);
+  box-shadow: none !important;
+}
 
+.member-tabset > .nav-tabs > li.open > a,
+.member-tabset > .nav-tabs > li:hover > a {
+  border: 0;
+  background: none !important;
+  color: var(--black) !important;
+  box-shadow: none !important;
+}
 
-  .tab-panel {
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 4px;
-  }
+.member-tabset > .nav-tabs > li.open > a > i,
+.member-tabset > .nav-tabs > li:hover > a > i {
+  color: var(--white);
+}
 
-  .tab-content {
-    margin-top: 30px !important;
-    background-color: inherit !important;
-  }
-  
-  .nav-tabs > li.open, .member-tabset > .nav-tabs > li:hover {
-    border-bottom: 4px solid #d83664;
-  }
+.member-tabset > .nav-tabs > li.open .dropdown-menu,
+.member-tabset > .nav-tabs > li:hover .dropdown-menu {
+  margin-top: 0px;
+}
 
-  .member-tabset > .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link.active:focus:hover {
-    color: #333333;
-    box-shadow: none !important;
-  }
-  
-  .member-tabset > .nav-tabs > li.open > a, .member-tabset > .nav-tabs > li:hover > a {
-    border: 0;
-    background: none !important;
-    color: #333333 !important;
-    box-shadow: none !important;
-  }
-  
-  .member-tabset > .nav-tabs > li.open > a > i, .member-tabset > .nav-tabs > li:hover > a > i {
-    color: #a6a6a6;
-  }
-  
-  .member-tabset > .nav-tabs > li.open .dropdown-menu, .member-tabset > .nav-tabs > li:hover .dropdown-menu {
-    margin-top: 0px;
-  }
-  
-  .member-tabset > .nav-tabs > li.active {
-    border-bottom: 4px solid #d83664;
-    position: relative;
-    color: #d83664;
-    font-weight: bolder;
-  }
-  
-  .member-tabset > .nav-tabs > li.active > a {
-    border: 0 !important;
-    color: #333333;
-    box-shadow: none !important;
-  }
+.member-tabset > .nav-tabs > li.active {
+  border-bottom: 4px solid var(--primary);
+  position: relative;
+  color: var(--primary);
+  font-weight: bolder;
+}
 
-  .member-tabset >.nav-tabs .nav-link.active, .nav-tabs .nav-link.active:focus > a {
-    border: 0 !important;
-    color: #333333;
-    box-shadow: none !important;
-  }
+.member-tabset > .nav-tabs > li.active > a,
+.member-tabset > .nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus > a,
+.member-tabset > .nav-tabs .nav-link > a:hover {
+  border: 0 !important;
+  color: var(--black);
+  box-shadow: none !important;
+}
 
-  .member-tabset > .nav-tabs .nav-link > a:hover {
-    border: 0 !important;
-    color: #333333;
-    box-shadow: none !important;
-  }
-  
-  .member-tabset > .nav-tabs > li.active > a > i {
-    color: #404040;
-  }
-  
-  .member-tabset > .tab-content {
-    margin-top: -3px;
-    background-color: #fff;
-    border: 0;
-    border-top: 1px solid #eee;
-    padding: 15px 0;
-  }
+.member-tabset > .nav-tabs > li.active > a > i {
+  color: var(--black);
+}
 
+.member-tabset > .tab-content {
+  margin-top: -3px;
+  background-color: var(--white);
+  border: 0;
+  border-top: 1px solid var(--white);
+  padding: 15px 0;
+}
+
+/*DATEPICKER CSS*/
+.bs-datepicker-body table td.week span {
+  color: var(--primary) !important;
+}
+
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-head,
+.bs-datepicker-head,
+.bs-datepicker button:active,
+.bs-datepicker-body table td.selected span,
+.bs-datepicker-body table td span[class*="select-"]:after,
+.bs-datepicker-body table td[class*="select-"] span:after,
+.bs-datepicker-body table td.active-week span:hover {
+  background-color: var(--primary) !important;
+}
