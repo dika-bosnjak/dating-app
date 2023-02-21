@@ -1,5 +1,6 @@
 namespace API.DTOs
 {
+    //MemberDTO is used to store all the data about a single member
     public class MemberDTO
     {
         public int Id { get; set; }

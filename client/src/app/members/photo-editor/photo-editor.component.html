@@ -1,14 +1,22 @@
 <div class="row" *ngIf="member">
-
+    <!--display user's photos-->
     <div class="col-4 text-center" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="photo of the user" class="img-thumbnail mb-1" width="400px" height="400px">
+        <img src="{{ photo.url }}" alt="photo of the user" class="img-thumbnail mb-1" width="400px" height="400px" />
         <div class="text-center">
-            <button class="btn btn-sm me-2" (click)="setMainPhoto(photo)" [disabled]="photo.isMain" [ngClass]="photo.isMain? 'btn-success active': 'btn-outline-success'">Set as main</button>
-            <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)"  [disabled]="photo.isMain"><i class="fa fa-trash"></i></button>
+            <!--set as main / delete the image options-->
+            <button class="btn btn-sm me-2" (click)="setMainPhoto(photo)" [disabled]="photo.isMain"
+                [ngClass]="photo.isMain ? 'btn-success active' : 'btn-outline-success'">
+                Set as main
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)" [disabled]="photo.isMain">
+                <i class="fa fa-trash"></i>
+            </button>
         </div>
     </div>
+    <!--Button for new image upload option-->
     <div *ngIf="apikey" class="mt-5 text-center">
-        <ng-picker-overlay [apikey]="apikey" (uploadSuccess)="onSuccess($event)"
-        (uploadError)="onError($event)"> <button class="btn btn-primary">Upload new image</button></ng-picker-overlay>
+        <ng-picker-overlay [apikey]="apikey" (uploadSuccess)="onSuccess($event)" (uploadError)="onError($event)">
+            <button class="btn btn-primary"> Upload new image </button>
+        </ng-picker-overlay>
     </div>
 </div>

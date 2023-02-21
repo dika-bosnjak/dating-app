@@ -29,12 +29,17 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {}
 
+  //on init
   ngOnInit(): void {
+    //initialize register form
     this.initializeForm();
+    //set the max date (user must be older than 18)
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
+  //iinitialize the registration form
   initializeForm() {
+    //create form builder group with default values and validators
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       gender: ['male'],
@@ -51,12 +56,14 @@ export class RegisterComponent implements OnInit {
         [Validators.required, this.matchValues('password')],
       ],
     });
+    //value change checker - validate on password change
     this.registerForm.controls['password'].valueChanges.subscribe({
       next: () =>
         this.registerForm.controls['confirmPassword'].updateValueAndValidity(),
     });
   }
 
+  //matchValues is used for form validation, check whether the confirm password matches the password
   matchValues(matchTo: string): ValidatorFn {
     return (control: AbstractControl) => {
       return control.value == control.parent?.get(matchTo)?.value
@@ -65,27 +72,34 @@ export class RegisterComponent implements OnInit {
     };
   }
 
+  //register function
   register() {
+    //get the date from the dateOfBirth field (without time - timezone)
     const dob = this.getDateOnly(
       this.registerForm.controls['dateOfBirth'].value
     );
+    //save the values from the form in the object
     const values = { ...this.registerForm.value, dateOfBirth: dob };
-    console.log(values);
+
+    //use account service to register the user
     this.accountService.register(values).subscribe({
-      next: (response) => {
-        console.log(response);
+      //if the user is registered successfully, display members
+      next: (_) => {
         this.router.navigateByUrl('/members');
       },
+      //if there are some errors, display it as validation errors
       error: (error) => {
         this.validationErrors = error;
       },
     });
   }
 
+  //cancel the registration process, navigate to home page
   cancel() {
-    this.cancelRegister.emit(false);
+    this.router.navigateByUrl('/');
   }
 
+  //get the date from the date of birth
   private getDateOnly(dob: string | undefined) {
     if (!dob) return;
     let theDob = new Date(dob);

@@ -5,13 +5,17 @@ using System.Threading.Tasks;
 
 namespace API.DTOs
 {
+    //UserDTO is used for the data stored in the token (logged in user data)
     public class UserDTO
     {
         public string Username { get; set; }
+
         public string Token { get; set; }
 
         public string PhotoUrl { get; set; }
 
         public string KnownAs { get; set; }
+
+        public string Gender { get; set; }
     }
 }

@@ -1,15 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   --primary: #d83664;
-  --darkprimary: #bf1041;
+  --darkprimary: #8d2140;
   --darkerprimary: #9b2345;
-  --lightprimary: #d5a8b5;
+  --lightprimary: #db7390;
 
   --blue: #2575df;
   --darkblue: #1e60b6;
 
   --white: #fff;
   --black: #333333;
+  --grey: #555555;
 }
 
 .btn,
@@ -37,6 +38,12 @@ input {
 .btn-primary:hover {
   color: var(--white) !important;
   background-color: var(--darkprimary) !important;
+  border-color: var(--darkprimary) !important;
+}
+
+.btn-primary.active {
+  color: var(--white) !important;
+  background-color: var(--darkerprimary) !important;
   border-color: var(--darkprimary) !important;
 }
 
@@ -76,6 +83,24 @@ input {
   background: #378a8a linear-gradient(180deg, #919999, #c3cccc) repeat-x;
   padding-bottom: 2px !important;
   color: var(--black);
+}
+
+/*PAGINATION*/
+.my-pagination .page-item.active .page-link {
+  z-index: 1;
+  color: var(--white);
+  background-color: var(--primary) !important;
+  border-color: var(--darkprimary);
+}
+
+.my-pagination .page-item .page-link {
+  z-index: 1;
+  color: var(--primary);
+}
+
+.my-pagination .page-item.disabled .page-link {
+  z-index: 1;
+  color: var(--grey) !important;
 }
 
 /*PANEL TABS*/

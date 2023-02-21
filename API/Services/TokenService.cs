@@ -15,15 +15,20 @@ namespace API.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
+        //create token method - create a token for a logged in user
         public string CreateToken(AppUser user)
         {
+            //create a claim with username
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
+            //create symmetric security key with sha512 alghoritm
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
+            //create token descriptor with its subject, expire date and signing credentials
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
@@ -31,10 +36,13 @@ namespace API.Services
                 SigningCredentials = creds
             };
 
+            //create token handler
             var tokenHandler = new JwtSecurityTokenHandler();
 
+            //create token
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            //return token
             return tokenHandler.WriteToken(token);
         }
     }

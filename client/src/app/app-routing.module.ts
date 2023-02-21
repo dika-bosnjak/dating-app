@@ -13,6 +13,7 @@ import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.gu
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  //protected routes, use AuthGuard
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -23,7 +24,7 @@ const routes: Routes = [
       {
         path: 'member/edit',
         component: MemberEditComponent,
-        canDeactivate: [PreventUnsavedChangesGuard],
+        canDeactivate: [PreventUnsavedChangesGuard], //use guard to prevent leaving the page without saving the changes
       },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },

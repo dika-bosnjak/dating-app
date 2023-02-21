@@ -2,6 +2,7 @@ using API.Extensions;
 
 namespace API.Entities
 {
+    //AppUser entity - schema in the db
     public class AppUser
     {
         public int Id { get; set; }

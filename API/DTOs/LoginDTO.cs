@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.DTOs
 {
+    //LoginDTO is used to store data on login
     public class LoginDTO
     {
         [Required]

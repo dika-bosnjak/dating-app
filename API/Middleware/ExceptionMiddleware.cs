@@ -4,12 +4,13 @@ using API.Errors;
 
 namespace API.Middleware
 {
+    //ExceptionMiddleware class used for displaying the exceptions
     public class ExceptionMiddleware
     {
         readonly RequestDelegate _next;
         readonly ILogger<ExceptionMiddleware> _logger;
-        
         readonly IHostEnvironment _env;
+
         public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IHostEnvironment env)
         {
             _env = env;
@@ -17,9 +18,10 @@ namespace API.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context) 
+        //invoke the action, if exception is catched, decide which exception log will be shown (development - full, else only Internal Server Error message)
+        public async Task InvokeAsync(HttpContext context)
         {
-            try 
+            try
             {
                 await _next(context);
             }
@@ -33,7 +35,7 @@ namespace API.Middleware
                     ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString())
                     : new ApiException(context.Response.StatusCode, ex.Message, "Internal Server Error");
 
-                var options = new JsonSerializerOptions{PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
                 var json = JsonSerializer.Serialize(response, options);
 

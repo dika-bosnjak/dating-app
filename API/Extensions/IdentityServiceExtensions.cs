@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions
 {
+    //IdentityServiceExtensions - extends identity service, adds jwt bearer in req
     public static class IdentityServiceExtensions
     {
         public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration config)

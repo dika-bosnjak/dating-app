@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.DTOs
 {
+    //RegisterDTO stores the data that is inserted during the registration process
     public class RegisterDTO
     {
         [Required]

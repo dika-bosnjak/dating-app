@@ -2,12 +2,16 @@ import {
   HttpClient,
   HttpHeaderResponse,
   HttpHeaders,
+  HttpParams,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map, of } from 'rxjs';
+import { Injectable, Query } from '@angular/core';
+import { map, of, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
+import { PaginatedResult } from '../_models/pagination';
+import { QueryParams } from '../_models/queryParams';
 import { User } from '../_models/user';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,24 +19,78 @@ import { User } from '../_models/user';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
+  memberCache = new Map();
+  user: User | undefined;
+  queryParams: QueryParams | undefined;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private accountService: AccountService
+  ) {
+    //call the service and set the current user and get query params
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: (user) => {
+        if (user) {
+          this.queryParams = new QueryParams(user);
+          this.user = user;
+        }
+      },
+    });
+  }
 
-  getMembers() {
-    if (this.members.length > 0) {
-      return of(this.members);
+  getQueryParams() {
+    return this.queryParams;
+  }
+
+  setQueryParams(params: QueryParams) {
+    this.queryParams = params;
+  }
+
+  resetQueryParams() {
+    if (this.user) {
+      this.queryParams = new QueryParams(this.user);
+      return this.queryParams;
     }
-    return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
-      map((members) => {
-        this.members = members;
-        return members;
+    return;
+  }
+
+  getMembers(queryParams: QueryParams) {
+    const response = this.memberCache.get(Object.values(queryParams).join('-'));
+
+    if (response) return of(response);
+
+    let params = this.getPaginationHeaders(
+      queryParams.pageNumber,
+      queryParams.pageSize
+    );
+
+    params = params.append('minAge', queryParams.minAge);
+    params = params.append('maxAge', queryParams.maxAge);
+    params = params.append('gender', queryParams.gender);
+    params = params.append('orderBy', queryParams.orderBy);
+
+    // if (this.members.length > 0) {
+    //   return of(this.members);
+    // }
+    return this.getPaginatedResult<Member[]>(
+      this.baseUrl + 'users',
+      params
+    ).pipe(
+      map((response) => {
+        this.memberCache.set(Object.values(queryParams).join('-'), response);
+        return response;
       })
     );
   }
 
   getMember(username: string) {
-    const member = this.members.find((x) => x.userName === username);
-    if (member) return of(member);
+    if (this.memberCache.size > 0) {
+      const member = [...this.memberCache.values()]
+        .reduce((arr, elem) => arr.concat(elem.result), [])
+        .find((member: Member) => member.userName === username);
+
+      if (member) return of(member);
+    }
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
@@ -57,5 +115,31 @@ export class MembersService {
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + `users/delete-photo/${photoId}`);
+  }
+
+  private getPaginatedResult<T>(url: string, params: HttpParams) {
+    const paginatedResult: PaginatedResult<T> = new PaginatedResult<T>();
+    return this.http.get<T>(url, { observe: 'response', params }).pipe(
+      map((response) => {
+        if (response.body) {
+          paginatedResult.result = response.body;
+        }
+
+        const pagination = response.headers.get('Pagination');
+        if (pagination) {
+          paginatedResult.pagination = JSON.parse(pagination);
+        }
+        return paginatedResult;
+      })
+    );
+  }
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number) {
+    let params = new HttpParams();
+
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
+
+    return params;
   }
 }

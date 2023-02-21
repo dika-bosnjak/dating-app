@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Entities
 {
+    //Photo entity - schema in the db
     [Table("Photos")]
     public class Photo
     {

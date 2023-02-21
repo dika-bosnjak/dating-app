@@ -28,15 +28,18 @@ export class MemberEditComponent implements OnInit {
     private memberService: MembersService,
     private toastr: ToastrService
   ) {
+    //use the service, get the current user
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: (user) => (this.user = user),
     });
   }
 
+  //on init, load the member
   ngOnInit(): void {
     this.loadMember();
   }
 
+  //loadMember, call the service and set the member info
   loadMember() {
     if (!this.user) return;
     this.memberService.getMember(this.user.username).subscribe({
@@ -44,6 +47,7 @@ export class MemberEditComponent implements OnInit {
     });
   }
 
+  //update member, vall the service and show the message, reset the form
   updateMember() {
     this.memberService.updateMember(this.editForm?.value).subscribe({
       next: (_) => {

@@ -1,5 +1,6 @@
 namespace API.Errors
 {
+    //ApiException class is used for user-defined displaying Exceptions (status code, message, details)
     public class ApiException
     {
         public ApiException(int statusCode, string message, string details)
