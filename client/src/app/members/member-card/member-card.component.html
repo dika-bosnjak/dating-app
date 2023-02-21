@@ -9,7 +9,8 @@
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="btn" [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'">
+        <button class="btn" [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'"
+          (click)="addLike(member)">
           <i class="fa fa-heart"></i>
         </button>
       </li>

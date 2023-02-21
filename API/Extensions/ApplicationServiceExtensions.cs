@@ -27,10 +27,14 @@ namespace API.Extentions
             //User repository
             services.AddScoped<IUserRepository, UserRepository>();
 
+            //User acitivity logger
             services.AddScoped<LogUserActivity>();
 
             //Mapper (entities to DTO)
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //Like repository
+            services.AddScoped<ILikesRepository, LikesRepository>();
 
             return services;
         }
