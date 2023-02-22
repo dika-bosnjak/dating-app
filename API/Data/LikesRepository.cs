@@ -46,6 +46,7 @@ namespace API.Data
                 Age = user.DateOfBirth.CalculateAge(),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain).Url,
                 City = user.City,
+                Gender = user.Gender,
                 Id = user.Id
             });
 

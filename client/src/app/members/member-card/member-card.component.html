@@ -1,21 +1,35 @@
 <div class="card mb-4" *ngIf="member">
   <div class="card-img-wrapper">
-    <img src="{{ member.photoUrl || './assets/user.png' }}" alt="{{ member.knownAs }}"
-      class="card-img-top image-height" />
+    <img
+      src="{{ member.photoUrl || './assets/user.png' }}"
+      alt="{{ member.knownAs }}"
+      class="card-img-top image-height"
+    />
     <ul class="list-inline member-icons animate text-center">
       <li class="list-inline-item" routerLink="/members/{{ member.userName }}">
-        <button class="btn" [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'">
+        <button
+          class="btn"
+          [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'"
+        >
           <i class="fa fa-user"></i>
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="btn" [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'"
-          (click)="addLike(member)">
+        <button
+          class="btn"
+          [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'"
+          (click)="addLike(member)"
+        >
           <i class="fa fa-heart"></i>
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="btn" [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'">
+        <button
+          class="btn"
+          [ngClass]="member.gender == 'female' ? 'btn-primary' : 'btn-blue'"
+          routerLink="/members/{{ member.userName }}"
+          [queryParams]="{ tab: 'Messages' }"
+        >
           <i class="fa fa-envelope"></i>
         </button>
       </li>
@@ -23,7 +37,10 @@
   </div>
   <div class="card-body p-1">
     <h6 class="card-title text-center mb-1 mt-2">
-      <i class="fa fa-user me-2" [ngClass]="member.gender == 'female' ? 'text-primary' : 'text-blue'"></i>
+      <i
+        class="fa fa-user me-2"
+        [ngClass]="member.gender == 'female' ? 'text-primary' : 'text-blue'"
+      ></i>
       {{ member.knownAs || member.userName }}, {{ member.age }}
     </h6>
     <p class="card-text text-muted text-center mb-3">

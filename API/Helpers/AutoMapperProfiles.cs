@@ -23,6 +23,10 @@ namespace API.Helpers
 
             //map register dto (inserted data during the registration process) to app user (which is saved in the db)
             CreateMap<RegisterDTO, AppUser>();
+
+            CreateMap<Message, MessageDTO>()
+            .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
+            .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }
