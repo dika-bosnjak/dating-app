@@ -1,22 +1,66 @@
 <div class="row" *ngIf="member">
-    <!--display user's photos-->
-    <div class="col-4 text-center" *ngFor="let photo of member.photos">
-        <img src="{{ photo.url }}" alt="photo of the user" class="img-thumbnail mb-1" width="400px" height="400px" />
-        <div class="text-center">
-            <!--set as main / delete the image options-->
-            <button class="btn btn-sm me-2" (click)="setMainPhoto(photo)" [disabled]="photo.isMain"
-                [ngClass]="photo.isMain ? 'btn-success active' : 'btn-outline-success'">
-                Set as main
-            </button>
-            <button class="btn btn-sm btn-danger" (click)="deletePhoto(photo)" [disabled]="photo.isMain">
-                <i class="fa fa-trash"></i>
-            </button>
-        </div>
+  <!--display user's photos-->
+  <div class="col-4 text-center" *ngFor="let photo of member.photos">
+    <img
+      src="{{ photo.url }}"
+      alt="photo of the user"
+      class="img-thumbnail mb-1"
+      width="400px"
+      height="400px"
+    />
+    <div class="text-center">
+      <!--set as main / delete the image options-->
+      <swal
+        #changeSwal
+        title="Set the photo as the profile photo?"
+        icon="question"
+        iconColor="#d83664"
+        [showConfirmButton]="true"
+        confirmButtonText="Set as the profile photo"
+        confirmButtonColor="#d83664"
+        [showCancelButton]="true"
+        [focusCancel]="true"
+        (confirm)="setMainPhoto(photo)"
+      >
+      </swal>
+      <button
+        class="btn btn-sm me-2"
+        [swal]="changeSwal"
+        [disabled]="photo.isMain"
+        [ngClass]="photo.isMain ? 'btn-success active' : 'btn-outline-success'"
+      >
+        Set as main
+      </button>
+      <swal
+        #deleteSwal
+        title="Delete the photo?"
+        text="This cannot be undone."
+        icon="error"
+        [showConfirmButton]="true"
+        confirmButtonText="Delete the photo"
+        confirmButtonColor="red"
+        [showCancelButton]="true"
+        [focusCancel]="true"
+        (confirm)="deletePhoto(photo)"
+      >
+      </swal>
+      <button
+        class="btn btn-sm btn-danger"
+        [disabled]="photo.isMain"
+        [swal]="deleteSwal"
+      >
+        <i class="fa fa-trash"></i>
+      </button>
     </div>
-    <!--Button for new image upload option-->
-    <div *ngIf="apikey" class="mt-5 text-center">
-        <ng-picker-overlay [apikey]="apikey" (uploadSuccess)="onSuccess($event)" (uploadError)="onError($event)">
-            <button class="btn btn-primary"> Upload new image </button>
-        </ng-picker-overlay>
-    </div>
+  </div>
+  <!--Button for new image upload option-->
+  <div *ngIf="apikey" class="mt-5 text-center">
+    <ng-picker-overlay
+      [apikey]="apikey"
+      (uploadSuccess)="onSuccess($event)"
+      (uploadError)="onError($event)"
+    >
+      <button class="btn btn-primary">Upload new image</button>
+    </ng-picker-overlay>
+  </div>
 </div>

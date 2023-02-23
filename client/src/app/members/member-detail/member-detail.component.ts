@@ -6,6 +6,7 @@ import {
   NgxGalleryAnimation,
 } from '@kolkov/ngx-gallery';
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/_models/member';
 import { Message } from 'src/app/_models/message';
 import { MembersService } from 'src/app/_services/members.service';
@@ -27,7 +28,8 @@ export class MemberDetailComponent implements OnInit {
   constructor(
     private memberService: MembersService,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private toastrService: ToastrService
   ) {}
 
   //on init, load the member, set the gallery options values
@@ -93,5 +95,11 @@ export class MemberDetailComponent implements OnInit {
     if (this.activeTab.heading === 'Messages') {
       this.loadMessages();
     }
+  }
+
+  addLike(member: Member) {
+    this.memberService.addLike(member.userName).subscribe({
+      next: () => this.toastrService.success('User liked successfully'),
+    });
   }
 }

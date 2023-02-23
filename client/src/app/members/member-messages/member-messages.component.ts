@@ -1,5 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
 
@@ -8,15 +16,30 @@ import { MessageService } from 'src/app/_services/message.service';
   templateUrl: './member-messages.component.html',
   styleUrls: ['./member-messages.component.css'],
 })
-export class MemberMessagesComponent implements OnInit {
+export class MemberMessagesComponent implements OnInit, AfterViewChecked {
   @ViewChild('messageForm') messageForm?: NgForm;
+  @ViewChild('chatWindow')
+  private myScrollContainer!: ElementRef;
   @Input() username?: string;
   @Input() messages: Message[] = [];
   messageContent = '';
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, private toastrService: ToastrService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.scrollToBottom();
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop =
+        this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
 
   sendMessage() {
     if (!this.username) return;
@@ -26,8 +49,16 @@ export class MemberMessagesComponent implements OnInit {
         next: (message) => {
           this.messages.push(message);
           this.messageForm?.reset();
-        }
-
+        },
       });
+  }
+
+  deleteMessage(id: number) {
+    this.messageService.deleteMessage(id).subscribe({
+      next: () => {
+        this.messages = this.messages?.filter((m) => m.id != id);
+        this.toastrService.success('Message is deleted successfully.');
+      },
+    });
   }
 }

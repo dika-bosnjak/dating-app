@@ -9,6 +9,10 @@
       />
       <div class="card-body">
         <div>
+          <strong>Name:</strong>
+          <p>{{ member.knownAs }}</p>
+        </div>
+        <div>
           <strong>Location:</strong>
           <p>{{ member.city }} {{ member.country }}</p>
         </div>
@@ -28,7 +32,7 @@
       <!--member actions-->
       <div class="card-footer">
         <div class="row m-auto">
-          <button class="btn btn-primary col-5">
+          <button class="btn btn-primary col-5" (click)="addLike(member)">
             <i class="fa fa-heart"></i> Like
           </button>
           <button

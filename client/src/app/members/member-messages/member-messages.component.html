@@ -1,13 +1,23 @@
 <div class="card">
-  <div class="card-body">
-    <div *ngIf="messages.length === 0" style="margin-top: 200px">
+  <div class="card-body" style="height: 50vh" id="chat-window" #chatWindow>
+    <div
+      *ngIf="messages.length === 0"
+      style="margin-top: 25vh"
+      class="text-center"
+    >
       No messages yet... say hi by using the message box below
     </div>
 
     <ul *ngIf="messages.length > 0" class="chat">
       <li *ngFor="let message of messages">
-        <div>
-          <span class="chat-img float-end">
+        <div
+          [ngClass]="
+            message.senderUsername == username
+              ? 'message-other'
+              : 'message-current'
+          "
+        >
+          <span class="chat-img">
             <img
               class="rounded-circle"
               src="{{ message.senderPhotoUrl || './assets/user.png' }}"
@@ -16,12 +26,10 @@
           </span>
           <div class="chat-body">
             <div class="header">
-              <small class="text-muted">
-                <span class="fa fa-clock-o">{{
-                  message.messageSent + "Z" | timeago
-                }}</span>
+              <small class="chat-time">
+                <i class="fa fa-clock-o me-1"></i>
+                <span>{{ message.messageSent + "Z" | timeago }}</span>
                 <span
-                  class="text-danger"
                   *ngIf="
                     !message.dateRead && message.senderUsername !== username
                   "
@@ -29,16 +37,38 @@
                   (unread)
                 </span>
                 <span
-                  class="text-success"
                   *ngIf="
                     message.dateRead && message.senderUsername !== username
                   "
                 >
                   (read {{ message.dateRead + "Z" | timeago }})
                 </span>
+                <swal
+                  #deleteSwal
+                  title="Delete message?"
+                  text="This cannot be undone. Other user still can read the message."
+                  icon="error"
+                  [showConfirmButton]="true"
+                  confirmButtonText="Delete the message"
+                  confirmButtonColor="red"
+                  [showCancelButton]="true"
+                  [focusCancel]="true"
+                  (confirm)="deleteMessage(message.id)"
+                >
+                </swal>
+                <span
+                  ><i
+                    class="fa fa-trash text-black ms-2"
+                    style="cursor: pointer"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Delete this message"
+                    [swal]="deleteSwal"
+                  ></i
+                ></span>
               </small>
             </div>
-            <p>{{ message.content }}</p>
+            <p class="message-content">{{ message.content }}</p>
           </div>
         </div>
       </li>
@@ -55,7 +85,7 @@
           class="form-control input-sm"
           placeholder="Send a private message"
         />
-        <div class="input-group-append">
+        <div class="input-group-append ms-3">
           <button
             class="btn btn-primary"
             type="submit"

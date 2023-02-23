@@ -77,7 +77,28 @@
           </div>
         </td>
         <td>{{ message.messageSent | timeago }}</td>
-        <td><button class="btn btn-danger">Delete</button></td>
+        <td>
+          <swal
+            #deleteSwal
+            title="Delete message?"
+            text="This cannot be undone. Other user still can read the message."
+            icon="error"
+            [showConfirmButton]="true"
+            confirmButtonText="Delete the message"
+            confirmButtonColor="red"
+            [showCancelButton]="true"
+            [focusCancel]="true"
+            (confirm)="deleteMessage(message.id)"
+          >
+          </swal>
+          <button
+            [swal]="deleteSwal"
+            class="btn btn-danger"
+            (click)="($event.stopPropagation)"
+          >
+            Delete
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
