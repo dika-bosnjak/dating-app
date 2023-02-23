@@ -12,6 +12,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [],
@@ -24,6 +25,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
     SweetAlert2Module.forRoot(),
+    ModalModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
@@ -43,6 +45,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ButtonsModule,
     TimeagoModule,
     SweetAlert2Module,
+    ModalModule,
   ],
 })
 export class SharedModule {}

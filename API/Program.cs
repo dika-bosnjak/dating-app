@@ -1,7 +1,9 @@
 using API.Data;
+using API.Entities;
 using API.Extensions;
 using API.Extentions;
 using API.Middleware;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +20,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 //use cors (user-defined origins)
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod()
-.WithOrigins("https://localhost:4200", "http://localhost:4200"));
+.WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
 //use authentication and authorization
 app.UseAuthentication();
@@ -37,7 +39,9 @@ try
     //do the db migrations
     await context.Database.MigrateAsync();
     //seed the database
-    await Seed.SeedUsers(context);
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+    await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)
 {
