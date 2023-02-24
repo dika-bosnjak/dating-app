@@ -13,16 +13,16 @@ namespace API.Controllers
     {
         private readonly ITokenService _tokenService;
 
-        public IUserRepository _userRepository { get; }
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IUnitOfWork _uow;
 
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IUserRepository userRepository, IMapper mapper)
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork uow, IMapper mapper)
         {
+            _uow = uow;
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
-            _userRepository = userRepository;
         }
 
         //register function
@@ -62,7 +62,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             //check whether there is a user in the database with the specific username
-            var user = await _userRepository.GetUserByUsernameAsync(loginDTO.Username);
+            var user = await _uow.UserRepository.GetUserByUsernameAsync(loginDTO.Username);
             if (user == null) return Unauthorized("Invalid username");
 
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
