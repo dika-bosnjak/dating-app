@@ -58,18 +58,15 @@ namespace API.Data
         public async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUserName, string recipientUserName)
         {
             //get all the messages between two users
-            var messages = await _context.Messages
-                .Include(u => u.Sender).ThenInclude(p => p.Photos)
-                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            var query = _context.Messages
                 .Where(
                     m => m.RecipientUsername == currentUserName && m.RecipientDeleted == false && m.SenderUsername == recipientUserName ||
                          m.RecipientUsername == recipientUserName && m.SenderUsername == currentUserName && m.SenderDeleted == false
                 )
-                .OrderBy(m => m.MessageSent)
-                .ToListAsync();
+                .OrderBy(m => m.MessageSent).AsQueryable();
 
             //get the unread messages from the loggedin user
-            var unreadMessages = messages.Where(m => m.DateRead == null && m.RecipientUsername == currentUserName).ToList();
+            var unreadMessages = query.Where(m => m.DateRead == null && m.RecipientUsername == currentUserName).ToList();
             //update dateread in all unread messages
             if (unreadMessages.Any())
             {
@@ -78,16 +75,10 @@ namespace API.Data
                     message.DateRead = DateTime.UtcNow;
                 }
 
-                await _context.SaveChangesAsync();
             }
 
-            return _mapper.Map<IEnumerable<MessageDTO>>(messages);
+            return await query.ProjectTo<MessageDTO>(_mapper.ConfigurationProvider).ToListAsync();
 
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public void AddGroup(Group group)

@@ -25,25 +25,17 @@ namespace API.Extentions
             //Token service
             services.AddScoped<ITokenService, TokenService>();
 
-            //User repository
-            services.AddScoped<IUserRepository, UserRepository>();
-
             //User acitivity logger
             services.AddScoped<LogUserActivity>();
 
             //Mapper (entities to DTO)
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            //Like repository
-            services.AddScoped<ILikesRepository, LikesRepository>();
-
-            //Message repository
-            services.AddScoped<IMessageRepository, MessageRepository>();
-
             //SingalR
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
 

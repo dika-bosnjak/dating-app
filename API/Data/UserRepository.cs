@@ -76,6 +76,11 @@ namespace API.Data
             .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+        }
+
         //GetUsersAsync function returns users with theirs images as a list
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
@@ -85,17 +90,12 @@ namespace API.Data
             .ToListAsync();
         }
 
-
-        //SaveAllAsync function saves all changes on the entity to the db (returns bool - number of entries that are saved/modified > 0)
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         //Update funstion sets the entry state to modified
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
         }
+
+
     }
 }

@@ -1,47 +1,27 @@
 import {
-  AfterViewChecked,
+  ChangeDetectionStrategy,
   Component,
-  ElementRef,
   Input,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { Message } from 'src/app/_models/message';
 import { MessageService } from 'src/app/_services/message.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-member-messages',
   templateUrl: './member-messages.component.html',
   styleUrls: ['./member-messages.component.css'],
 })
-export class MemberMessagesComponent implements OnInit, AfterViewChecked {
+export class MemberMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm?: NgForm;
-  @ViewChild('chatWindow')
-  private myScrollContainer!: ElementRef;
   @Input() username?: string;
   messageContent = '';
 
-  constructor(
-    public messageService: MessageService,
-    private toastrService: ToastrService
-  ) {}
+  constructor(public messageService: MessageService) {}
 
-  ngOnInit(): void {
-    this.scrollToBottom();
-  }
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
-
-  scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop =
-        this.myScrollContainer.nativeElement.scrollHeight;
-    } catch (err) {}
-  }
+  ngOnInit(): void {}
 
   sendMessage() {
     if (!this.username) return;

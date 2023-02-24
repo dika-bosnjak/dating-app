@@ -17,12 +17,12 @@ namespace API.Helpers
             var userID = resultContext.HttpContext.User.GetUserId();
 
             //get the user repository
-            var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
+            var uow = resultContext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
 
             //get the user and modify his active datetime
-            var user = await repo.GetUserByIdAsync(userID);
+            var user = await uow.UserRepository.GetUserByIdAsync(userID);
             user.LastActive = DateTime.UtcNow;
-            await repo.SaveAllAsync();
+            await uow.Complete();
         }
     }
 }

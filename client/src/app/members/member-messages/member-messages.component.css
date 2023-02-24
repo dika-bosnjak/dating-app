@@ -20,8 +20,6 @@
 
 .card-body {
   position: relative;
-  overflow-y: scroll;
-  overflow-anchor: auto;
   margin-bottom: 20px;
 }
 
@@ -32,7 +30,7 @@
   border: 1px solid #d83664;
   color: white;
   border-radius: 10px;
-  width: 50%;
+  width: 40%;
   margin-left: 50%;
 }
 
@@ -74,7 +72,7 @@
   padding: 10px;
   background-color: #f3f1f1;
   border-radius: 10px;
-  width: 50%;
+  width: 40%;
 }
 
 .message-other .message-content {
