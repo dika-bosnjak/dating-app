@@ -21,10 +21,12 @@ export class MemberMessagesComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatWindow')
   private myScrollContainer!: ElementRef;
   @Input() username?: string;
-  @Input() messages: Message[] = [];
   messageContent = '';
 
-  constructor(private messageService: MessageService, private toastrService: ToastrService) {}
+  constructor(
+    public messageService: MessageService,
+    private toastrService: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.scrollToBottom();
@@ -45,19 +47,16 @@ export class MemberMessagesComponent implements OnInit, AfterViewChecked {
     if (!this.username) return;
     this.messageService
       .sendMessage(this.username, this.messageContent)
-      .subscribe({
-        next: (message) => {
-          this.messages.push(message);
-          this.messageForm?.reset();
-        },
+      .then(() => {
+        this.messageForm?.reset();
       });
   }
 
   deleteMessage(id: number) {
     this.messageService.deleteMessage(id).subscribe({
       next: () => {
-        this.messages = this.messages?.filter((m) => m.id != id);
-        this.toastrService.success('Message is deleted successfully.');
+        // this.messages = this.messages?.filter((m) => m.id != id);
+        // this.toastrService.success('Message is deleted successfully.');
       },
     });
   }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 
@@ -14,7 +15,7 @@ export class PresenceService {
   private onlineUserSource = new BehaviorSubject<string[]>([]);
   onlineUsers$ = this.onlineUserSource.asObservable();
 
-  constructor(private toastrService: ToastrService) {}
+  constructor(private toastrService: ToastrService, private router: Router) {}
 
   createHubConnection(user: User) {
     this.hubConnection = new HubConnectionBuilder()
@@ -27,15 +28,34 @@ export class PresenceService {
     this.hubConnection.start().catch((error) => console.log(error));
 
     this.hubConnection.on('UserIsOnline', (username) => {
-      this.toastrService.info(username + ' has connected');
+      this.onlineUsers$.pipe(take(1)).subscribe({
+        next: (usernames) =>
+          this.onlineUserSource.next([...usernames, username]),
+      });
     });
 
     this.hubConnection.on('UserIsOffline', (username) => {
-      this.toastrService.warning(username + ' has disconnected');
+      this.onlineUsers$.pipe(take(1)).subscribe({
+        next: (usernames) =>
+          this.onlineUserSource.next(usernames.filter((x) => x !== username)),
+      });
     });
 
     this.hubConnection.on('GetOnlineUsers', (usernames) => {
       this.onlineUserSource.next(usernames);
+    });
+
+    this.hubConnection.on('NewMessageReceived', ({ username, knownAs }) => {
+      this.toastrService
+        .info(
+          knownAs +
+            ' has sent you a new message! Click here to see the message.'
+        )
+        .onTap.pipe(take(1))
+        .subscribe({
+          next: () =>
+            this.router.navigateByUrl('/members/' + username + '?tab=Messages'),
+        });
     });
   }
 

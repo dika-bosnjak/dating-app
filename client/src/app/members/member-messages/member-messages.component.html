@@ -1,15 +1,18 @@
 <div class="card">
   <div class="card-body" style="height: 50vh" id="chat-window" #chatWindow>
     <div
-      *ngIf="messages.length === 0"
+      *ngIf="(messageService.messageThread$ | async)?.length === 0"
       style="margin-top: 25vh"
       class="text-center"
     >
       No messages yet... say hi by using the message box below
     </div>
 
-    <ul *ngIf="messages.length > 0" class="chat">
-      <li *ngFor="let message of messages">
+    <ul
+      *ngIf="(messageService.messageThread$ | async)!.length > 0"
+      class="chat"
+    >
+      <li *ngFor="let message of messageService.messageThread$ | async">
         <div
           [ngClass]="
             message.senderUsername == username
@@ -28,7 +31,7 @@
             <div class="header">
               <small class="chat-time">
                 <i class="fa fa-clock-o me-1"></i>
-                <span>{{ message.messageSent + "Z" | timeago }}</span>
+                <span>{{ message.messageSent | timeago }}</span>
                 <span
                   *ngIf="
                     !message.dateRead && message.senderUsername !== username
@@ -41,7 +44,7 @@
                     message.dateRead && message.senderUsername !== username
                   "
                 >
-                  (read {{ message.dateRead + "Z" | timeago }})
+                  (read {{ message.dateRead | timeago }})
                 </span>
                 <swal
                   #deleteSwal
