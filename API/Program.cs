@@ -27,6 +27,9 @@ app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredential
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 //map the controllers
 app.MapControllers();
 
