@@ -13,11 +13,6 @@ namespace API.Extentions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            //database
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
-            });
 
             //CORS
             services.AddCors();

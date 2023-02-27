@@ -1,9 +1,7 @@
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using API.Entities;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -11,6 +9,12 @@ namespace API.Data
     //Seed class is used to create the database seed
     public class Seed
     {
+        public static async Task ClearConnections(DataContext context)
+        {
+            context.Connections.RemoveRange(context.Connections);
+            await context.SaveChangesAsync();
+        }
+
         public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             //if there are some records in the database, return
@@ -42,6 +46,9 @@ namespace API.Data
             {
                 //set username to lower case
                 user.UserName = user.UserName.ToLower();
+                //set utc date
+                user.Created = DateTime.SpecifyKind(user.Created, DateTimeKind.Utc);
+                user.LastActive = DateTime.SpecifyKind(user.LastActive, DateTimeKind.Utc);
                 //add the user to the context
                 await userManager.CreateAsync(user, "password");
 
