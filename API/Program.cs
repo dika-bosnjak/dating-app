@@ -48,7 +48,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 //use cors (user-defined origins)
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-.WithOrigins("http://localhost:4200", "https://localhost:4200"));
+.WithOrigins("http://localhost:4200", "https://localhost:4200", "https://db-dating-app.fly.dev"));
 
 //use authentication and authorization
 app.UseAuthentication();
