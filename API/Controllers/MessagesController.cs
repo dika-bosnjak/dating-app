@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -72,34 +68,31 @@ namespace API.Controllers
             return messages;
         }
 
-        // [HttpGet("thread/{username}")]
-        // public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessageThread(string username)
-        // {
-        //     var currentUserName = User.GetUsername();
-        //     return Ok(await _uow.MessageRepository.GetMessageThread(currentUserName, username));
-        // }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMessage(int id)
         {
+            //get the username of logged in user
             var username = User.GetUsername();
 
+            //get the message id that should be deleted
             var message = await _uow.MessageRepository.GetMessage(id);
 
+            //only sender or the receiver can delete the message in their inbox
             if (message.SenderUsername != username && message.RecipientUsername != username)
                 return Unauthorized();
 
+            //if the sender deleted message, mark the field
             if (message.SenderUsername == username) message.SenderDeleted = true;
+            //if the receiver deleted message, mark the field
             if (message.RecipientUsername == username) message.RecipientDeleted = true;
 
+            //if both users deleted the message, delete it in the database too
             if (message.SenderDeleted && message.RecipientDeleted)
                 _uow.MessageRepository.DeleteMessage(message);
 
+            //return response
             if (await _uow.Complete()) return Ok();
-
             return BadRequest("Error occurred on deleting the message");
-
-
         }
 
     }

@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    //Fallback Controller is used to redirect unknown requests to angular app (wwwroot) folder
     public class FallbackController : Controller
     {
         public ActionResult Index()

@@ -2,7 +2,7 @@ using System.Security.Claims;
 
 namespace API.Extensions
 {
-    //ClaimsPrincipalExtensions - used for extracting username from token claim
+    //ClaimsPrincipalExtensions - used for extracting username and user id from token claim
     public static class ClaimsPrincipalExtensions
     {
         public static string GetUsername(this ClaimsPrincipal user)

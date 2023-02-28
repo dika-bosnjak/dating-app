@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace API.DTOs
 {
+    //LikeDTO is used to get user data from likes table
     public class LikeDTO
     {
         public int Id { get; set; }

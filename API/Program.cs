@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityService(builder.Configuration);
 
+//set the connection string for the database
 var connString = "";
 if (builder.Environment.IsDevelopment())
     connString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -36,6 +36,7 @@ else
 
     connString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
 }
+//set the db context to use postgre sql
 builder.Services.AddDbContext<DataContext>(opt =>
 {
     opt.UseNpgsql(connString);
@@ -48,21 +49,24 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 //use cors (user-defined origins)
 app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials()
-.WithOrigins("http://localhost:4200", "https://localhost:4200", "https://db-dating-app.fly.dev"));
+.WithOrigins("http://localhost:4200", "https://localhost:4200"));
 
 //use authentication and authorization
 app.UseAuthentication();
 app.UseAuthorization();
 
+//use default and static files (for wwwroot)
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
 //map the controllers
 app.MapControllers();
 
+//map the hubs for presence and messages
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
 
+//map the fallback controller
 app.MapFallbackToController("Index", "Fallback");
 
 //create the app scope and set the services
@@ -78,7 +82,9 @@ try
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
 
+    //clear the connections from the db
     await Seed.ClearConnections(context);
+    //seed the users in the db
     await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)

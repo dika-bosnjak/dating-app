@@ -18,7 +18,7 @@ namespace API.Data
             _context = context;
         }
 
-        //GetMemberAsync function returns the member info using his username
+        //GetMemberAsync function returns the member info by his username
         public async Task<MemberDTO> GetMemberAsync(string username)
         {
             return await _context.Users
@@ -27,7 +27,7 @@ namespace API.Data
             .SingleOrDefaultAsync();
         }
 
-        //GetMembersAsync function returns the members info using queries
+        //GetMembersAsync function returns the members info by query params
         public async Task<PagedList<MemberDTO>> GetMembersAsync(QueryParams queryParams)
         {
             //create new query
@@ -39,7 +39,7 @@ namespace API.Data
             //query all users with the specific gender
             query = query.Where(u => u.Gender == queryParams.Gender);
 
-            //calculate min age and max age using query params
+            //query users using calculated min age and max age using query params
             var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-queryParams.MaxAge - 1));
             var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-queryParams.MinAge));
             query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
@@ -51,7 +51,7 @@ namespace API.Data
                 _ => query.OrderByDescending(u => u.LastActive)
             };
 
-            //return pagedlist (with pagination)
+            //return pagedlist (users with pagination)
             return await PagedList<MemberDTO>.CreateAsync(
                 query.AsNoTracking().ProjectTo<MemberDTO>(_mapper.ConfigurationProvider),
                 queryParams.PageNumber,
@@ -76,6 +76,7 @@ namespace API.Data
             .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        //get the user gender
         public async Task<string> GetUserGender(string username)
         {
             return await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
@@ -90,7 +91,7 @@ namespace API.Data
             .ToListAsync();
         }
 
-        //Update funstion sets the entry state to modified
+        //Update function sets the entry state to modified
         public void Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;

@@ -4,6 +4,7 @@ namespace API.SignalR
     {
         private static readonly Dictionary<string, List<string>> OnlineUsers = new Dictionary<string, List<string>>();
 
+        //on user connection, add the user in the array OnlineUsers
         public Task<bool> UserConnected(string username, string connectionId)
         {
             bool isOnline = false;
@@ -23,6 +24,7 @@ namespace API.SignalR
             return Task.FromResult(isOnline);
         }
 
+        //on user disconnection, delete the user from the array OnlineUsers
         public Task<bool> UserDisconnected(string username, string connectionId)
         {
             bool isOffline = false;
@@ -42,6 +44,7 @@ namespace API.SignalR
             return Task.FromResult(isOffline);
         }
 
+        //get all online users
         public Task<string[]> GetOnlineUsers()
         {
             string[] onlineUsers;
@@ -54,6 +57,7 @@ namespace API.SignalR
 
         }
 
+        //get all connections for the user
         public static Task<List<string>> GetConnectionsForUser(string username)
         {
             List<string> connectionIds;

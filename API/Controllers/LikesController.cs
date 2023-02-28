@@ -40,7 +40,6 @@ namespace API.Controllers
                 SourceUserId = sourceUserId,
                 TargetUserId = likedUser.Id,
             };
-
             sourceUser.LikedUsers.Add(userLike);
 
             if (await _uow.Complete()) return Ok();
@@ -49,7 +48,7 @@ namespace API.Controllers
 
         }
 
-        //get user likes using predicate
+        //get user likes
         [HttpGet]
         public async Task<ActionResult<PagedList<LikeDTO>>> GetUserLikes([FromQuery] LikesParams likesParams)
         {

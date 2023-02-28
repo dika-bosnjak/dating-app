@@ -1,4 +1,3 @@
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
@@ -40,11 +39,10 @@ namespace API.Controllers
 
             //add the user in the db
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
-
             if (!result.Succeeded) return BadRequest(result.Errors);
 
+            //add the user to the role "Member"
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
-
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
             //return the user data (username, token, known as and gender)
@@ -65,8 +63,8 @@ namespace API.Controllers
             var user = await _uow.UserRepository.GetUserByUsernameAsync(loginDTO.Username);
             if (user == null) return Unauthorized("Invalid username");
 
+            //check whether the correct password is inputes
             var result = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
-
             if (!result) return Unauthorized("Invalid password");
 
             //return the user data (username, token, main photo, known as and gender)

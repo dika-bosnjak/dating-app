@@ -30,7 +30,9 @@ namespace API.Extentions
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();
 
+            //use unit of work
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
 

@@ -24,21 +24,28 @@ namespace API.Data
         //get all the likeDTOs (users that liked the member, or users that are liked by the member)
         public async Task<PagedList<LikeDTO>> GetUserLikes(LikesParams likesParams)
         {
+            //get all users
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
+            //get all likes
             var likes = _context.Likes.AsQueryable();
 
+            //check predicate from params - if the liked users are requested
             if (likesParams.Predicate == "liked")
             {
+                //get all users that are liked by the logged in user
                 likes = likes.Where(like => like.SourceUserId == likesParams.UserId);
                 users = likes.Select(like => like.TargetUser);
             }
 
+            //check predicate from params - if the liked by users are requested
             if (likesParams.Predicate == "likedBy")
             {
+                //get all users that liked the logged in user
                 likes = likes.Where(like => like.TargetUserId == likesParams.UserId);
                 users = likes.Select(like => like.SourceUser);
             }
 
+            //select only neccessary information
             var likedUsers = users.Select(user => new LikeDTO
             {
                 UserName = user.UserName,
@@ -50,6 +57,7 @@ namespace API.Data
                 Id = user.Id
             });
 
+            //return all users with pagination
             return await PagedList<LikeDTO>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
         }
 

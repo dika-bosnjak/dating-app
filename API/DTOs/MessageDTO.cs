@@ -1,5 +1,6 @@
 namespace API.DTOs
 {
+    //MessageDTO is used for getting the message info from the database
     public class MessageDTO
     {
         public int Id { get; set; }

@@ -24,11 +24,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery] QueryParams queryParams)
         {
-            //get the loggedin user
+            //get the loggedin user gender
             var gender = await _uow.UserRepository.GetUserGender(User.GetUsername());
+
+            //set the current username in query params
             queryParams.CurrentUsername = User.GetUsername();
 
-            //if there is no gender in query params, set the default gender as the opposite one from the loggedin user
+            //if there is no gender in query params, set the query default gender as the opposite one from the loggedin user
             if (string.IsNullOrEmpty(queryParams.Gender))
             {
                 queryParams.Gender = gender == "male" ? "female" : "male";
@@ -37,7 +39,7 @@ namespace API.Controllers
             //get the members from the db
             var users = await _uow.UserRepository.GetMembersAsync(queryParams);
 
-            //aff the pagination header to the response
+            //add the pagination header to the response
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages));
 
             //return the users
@@ -81,7 +83,7 @@ namespace API.Controllers
                 Url = uploadedPhotoDTO.imageUrl
             };
 
-            //check whether it is the first photo, if is, set as main
+            //check whether it is the first photo, if it is, set as main
             if (user.Photos.Count == 0) photo.IsMain = true;
 
             //add new photo object

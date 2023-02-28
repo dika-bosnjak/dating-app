@@ -24,11 +24,14 @@ namespace API.Helpers
             //map register dto (inserted data during the registration process) to app user (which is saved in the db)
             CreateMap<RegisterDTO, AppUser>();
 
+            //map the message to the messageDTO with sender and recipient photos
             CreateMap<Message, MessageDTO>()
             .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
             .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
 
+            //map the date time to date time using utc datetime
             CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
+            //map the optional date time to optional date time using utc datetime
             CreateMap<DateTime?, DateTime?>().ConvertUsing(d => d.HasValue ? DateTime.SpecifyKind(d.Value, DateTimeKind.Utc) : null);
         }
     }

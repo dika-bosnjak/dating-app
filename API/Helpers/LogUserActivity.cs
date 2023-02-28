@@ -19,7 +19,7 @@ namespace API.Helpers
             //get the user repository
             var uow = resultContext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
 
-            //get the user and modify his active datetime
+            //get the user and modify his last active datetime
             var user = await uow.UserRepository.GetUserByIdAsync(userID);
             user.LastActive = DateTime.UtcNow;
             await uow.Complete();

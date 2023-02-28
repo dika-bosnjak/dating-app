@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace API.DTOs
 {
+    //CreateMessageDTO is used when the message is created on clients side
     public class CreateMessageDTO
     {
         public string RecipientUsername { get; set; }
